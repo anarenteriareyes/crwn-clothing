@@ -1,13 +1,25 @@
-body{
+body {
     font-family: 'Open Sans Condensed', sans-serif;
     padding: 20px 60px;
 }
 
-a{
+a {
     text-decoration: none;
     color: black;
 }
 
-*{
+* {
     box-sizing: border-box;
+    scrollbar-color: rgba(0, 0, 0, 0.7) transparent !important;
+    scrollbar-width: thin;
+}
+
+body::-webkit-scrollbar {
+    width: 4px;
+    background-color: transparent;
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 20px;
 }
