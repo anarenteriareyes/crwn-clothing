@@ -3,20 +3,21 @@ import {connect } from 'react-redux'
 
 import CollectionItem from '../../components/collection-item/collection-item.component'
 import { selectCollection } from '../../redux/shop/shop.selectors';
-import './collection.styles.scss';
+import { CollectionPageContainer, ItemsContainer, Title } from './collection.styles';
+
 
 const CollectionPage = ({collection}) => {
     const {title, items} = collection;
     
     return(
-    <div className='collection-page'>
-        <h2 className='title'>{title}</h2>
-        <div className="items">
+    <CollectionPageContainer>
+        <Title >{title}</Title>
+        <ItemsContainer>
             {
                 items.map(item => <CollectionItem key={item.id} item={item} />)
             }
-        </div>
-    </div>
+        </ItemsContainer>
+    </CollectionPageContainer>
 )}
 
 // the ownProps is the actual props of the component (CollectionPage) in this case the only prop is "match"
