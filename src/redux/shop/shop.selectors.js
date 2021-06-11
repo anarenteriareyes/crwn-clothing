@@ -29,3 +29,14 @@ export const selectCollection = memoize((collectionUrlParam) =>
         // (collections) => collections.find(collection => collection.id === COLLECTION_ID_MAP[collectionUrlParam])
     )
 );
+
+
+export const selectIsCollctionFetching = createSelector(
+    [selectShop],
+    shop => shop.isFetching
+);
+
+export const selectIsCollectionsLoaded = createSelector(
+    [selectShop],
+    shop  =>  !!shop.collections
+)

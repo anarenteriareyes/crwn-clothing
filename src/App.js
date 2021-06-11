@@ -8,32 +8,34 @@ import HomePage from './pages/homepage/homepage.component';
 import ShopPage from './pages/shop/shop.component';
 import Header from './components/header/header.component';
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
-import { addCollectionAndDocuments, auth, createUserProfileDocument } from './firebase/firebase.utils';
-import { setCurrentUser } from './redux/user/user.actions';
 import { selectCurrentUser } from './redux/user/user.selectors';
 import CheckoutPage from './pages/checkout/checkout.component';
+import { checkUserSession } from './redux/user/user.actions';
 
 
 class App extends React.Component {
   unsubscribeFromAuth = null;
 
   componentDidMount() {
-    // get the setCurrentUser function from props that was passed by mapDispatchToProps
-    const { setCurrentUser } = this.props;
+      const { checkUserSession } = this.props;
+      checkUserSession();
 
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
-      if (userAuth) {
-        const userRef = await createUserProfileDocument(userAuth);
-        await userRef.onSnapshot(snapShot => {
-          setCurrentUser({
-            id: snapShot.id,
-            ...snapShot.data()
-          })
-        })
-      } else {
-        setCurrentUser(userAuth); //currentUser: null
-      }
-    })
+    // get the setCurrentUser function from props that was passed by mapDispatchToProps
+    // const { setCurrentUser } = this.props;
+
+    // this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+    //   if (userAuth) {
+    //     const userRef = await createUserProfileDocument(userAuth);
+    //     await userRef.onSnapshot(snapShot => {
+    //       setCurrentUser({
+    //         id: snapShot.id,
+    //         ...snapShot.data()
+    //       })
+    //     })
+    //   } else {
+    //     setCurrentUser(userAuth); //currentUser: null
+    //   }
+    // })
   }
 
   componentWillUnmount() {
@@ -64,11 +66,18 @@ const mapStateToProps = createStructuredSelector({
   currentUser : selectCurrentUser
 })
 
-// setCurrentUser is a function that dispatch an action to update redux store (state)
 const mapDispatchToProps = dispatch => ({
-  setCurrentUser: user => dispatch(setCurrentUser(user))
-})
+  checkUserSession : () => dispatch(checkUserSession()) 
+ })
+
+// // setCurrentUser is a function that dispatch an action to update redux store (state)
+// const mapDispatchToProps = dispatch => ({
+//   setCurrentUser: user => dispatch(setCurrentUser(user))
+// })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
-// if we needed to handle state, intead of null as first argument of connect, we should pass a mapStateToProps function 
+
+
+// export default connect(mapStateToProps, mapDispatchToProps)(App);
+// if we needed to handle state, instead of null as first argument of connect, we should pass a mapStateToProps function 
 // to get the object that we want from redux store
