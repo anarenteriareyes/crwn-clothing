@@ -16,3 +16,4 @@ const CollectionPageContainer = compose(
 )(CollectionPage)
 
 export default CollectionPageContainer;
+

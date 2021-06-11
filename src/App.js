@@ -11,38 +11,16 @@ import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up
 import { selectCurrentUser } from './redux/user/user.selectors';
 import CheckoutPage from './pages/checkout/checkout.component';
 import { checkUserSession } from './redux/user/user.actions';
+import { useEffect } from 'react';
 
 
-class App extends React.Component {
-  unsubscribeFromAuth = null;
+const App = ({checkUserSession, currentUser}) => {
 
-  componentDidMount() {
-      const { checkUserSession } = this.props;
-      checkUserSession();
+  useEffect(() => {
+    checkUserSession();
+  },[checkUserSession])
+  
 
-    // get the setCurrentUser function from props that was passed by mapDispatchToProps
-    // const { setCurrentUser } = this.props;
-
-    // this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
-    //   if (userAuth) {
-    //     const userRef = await createUserProfileDocument(userAuth);
-    //     await userRef.onSnapshot(snapShot => {
-    //       setCurrentUser({
-    //         id: snapShot.id,
-    //         ...snapShot.data()
-    //       })
-    //     })
-    //   } else {
-    //     setCurrentUser(userAuth); //currentUser: null
-    //   }
-    // })
-  }
-
-  componentWillUnmount() {
-    this.unsubscribeFromAuth();
-  }
-
-  render() {
     return (
       <div >
         <Header />
@@ -50,11 +28,10 @@ class App extends React.Component {
           <Route exact path='/' component={HomePage} />
           <Route path='/shop' component={ShopPage} />
           <Route path='/checkout' component={CheckoutPage} />
-          <Route exact path='/signin' render={ () => this.props.currentUser ? (<Redirect to="/" />) : (<SignInAndSignUpPage />) }/>
+          <Route exact path='/signin' render={ () => currentUser ? (<Redirect to="/" />) : (<SignInAndSignUpPage />) }/>
           </Switch>
       </div>
     );
-  }
 }
 
 // const mapStateToProps = ({user}) => ({
